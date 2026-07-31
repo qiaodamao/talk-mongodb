@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="139px" height="135px" viewBox="0 0 139 135" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>news-fill</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="news-fill" transform="translate(69.054688, 67.203125) scale(-1, 1) translate(-69.054688, -67.203125) translate(0.054688, 0.203125)" fill="#000000" fill-rule="nonzero">
+            <path d="M71.1738281,0.130859375 L66.7148438,0.130859375 C29.8964844,0.130859375 0.048828125,29.9785156 0.048828125,66.796875 L0.048828125,122.669922 C0.048828125,128.630859 4.88085938,133.464844 10.84375,133.464844 L69.7558594,133.464844 C106.03125,133.464844 136.732422,105.078125 137.810547,68.8183594 C138.931641,31.140625 108.605469,0.130859375 71.1738281,0.130859375 L71.1738281,0.130859375 Z" id="形状"></path>
+        </g>
+    </g>
+</svg>

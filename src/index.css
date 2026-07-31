@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-text-main antialiased;
+    background-color: #FAFAFA;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  ::selection {
+    background: #a4855e;
+    color: #fcf1c3;
+  }
+
+  ::-moz-selection {
+    background: #a4855e;
+    color: #fcf1c3;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #E3E3E3;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #A88457;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #937348;
+  }
+}
+
+@layer components {
+  /* Message card animation */
+  .message-card {
+    animation: fadeInUp 0.3s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Image preview overlay */
+  .preview-overlay {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Back to top animation */
+  .back-to-top-enter {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

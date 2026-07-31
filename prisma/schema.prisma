@@ -1,0 +1,38 @@
+generator client {
+  provider        = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  username   String
+  content    String
+  img        String?
+  ip         String?
+  ipLocation String?
+  dream      String?
+  userImg    String?
+  reply      String?
+  replytime  DateTime?
+  posttime   DateTime  @default(now())
+
+  @@index([posttime])
+  @@index([username])
+}
+
+model Blacklist {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  ip        String
+  createdAt DateTime @default(now())
+}
