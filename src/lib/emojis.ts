@@ -29,13 +29,25 @@ export const emojiMap: Record<string, string> = {
 // 所有 emoji key 列表，用于 emoji 选择器
 export const emojiKeys = Object.keys(emojiMap)
 
+const EMOJI_STYLE = 'display:inline-block;height:18px;margin-bottom:-3px;margin-left:2px;margin-right:2px;vertical-align:middle;'
+
+// 将单个 emoji 标记替换为 <img> 标签
+function emojiToImg(match: string): string {
+  const src = emojiMap[match]
+  if (src) {
+    return `<img src="${src}" alt="${match}" style="${EMOJI_STYLE}" />`
+  }
+  return match
+}
+
 // 将文本中的 emoji 标记替换为 <img> 标签
+// 连续的多个 emoji（中间可能有空白/换行）会用 nowrap 的 span 包裹，确保横向排列
 export function replaceEmojis(text: string): string {
-  return text.replace(/\[[^\]]+\]/g, (match) => {
-    const src = emojiMap[match]
-    if (src) {
-      return `<img src="${src}" alt="${match}" style="height:18px;margin-bottom:-3px;margin-left:2px;margin-right:2px;vertical-align:middle;" />`
-    }
-    return match
+  // 匹配连续的 emoji 序列（中间允许空白/换行）
+  return text.replace(/(\[[^\]]+\])(\s*\[[^\]]+\])*/g, (sequence) => {
+    // 把序列里的空白去掉，每个 emoji 替换成 img
+    const imgs = sequence.replace(/\s+/g, '').replace(/\[[^\]]+\]/g, emojiToImg)
+    // 用 nowrap span 包裹，防止父容器的 whitespace-pre-wrap 导致换行
+    return `<span style="display:inline-block;white-space:nowrap;">${imgs}</span>`
   })
 }

@@ -46,7 +46,7 @@ export default function Login() {
           <h1 className="text-2xl font-bold text-text-main" style={{ fontFamily: '"BrandonText-Black", "PingFang SC", sans-serif' }}>
             互动客厅管理
           </h1>
-          <p className="text-sm text-muted mt-2">新文艺 · 理想生活杂志</p>
+          <p className="text-sm text-muted mt-2">视觉符号</p>
         </div>
         <form onSubmit={handleSubmit} className="bg-white rounded-pill p-8 space-y-5">
           {error && (
