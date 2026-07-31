@@ -89,8 +89,8 @@ export default function Home() {
       <footer className="py-8 text-center bg-[#FAFAFA]">
         <div className="max-w-[1600px] mx-auto px-6">
           <div className="flex items-center justify-center gap-8 mb-3">
-            <a href="https://xinwenyi.com" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-accent transition-all duration-300">关于</a>
-            <a href="https://xinwenyi.com/yiyan.php" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-accent transition-all duration-300">一言</a>
+            <a href="https://shijuefuhao.com" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-accent transition-all duration-300">关于</a>
+            <a href="https://talk.shijuefuhao.com/yiyan" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-accent transition-all duration-300">一言</a>
             <a href="#" className="text-sm text-muted hover:text-accent transition-all duration-300">联系</a>
             {token ? (
               <>
