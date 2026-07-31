@@ -242,6 +242,10 @@ https://你的域名/api/setup
 - **Node.js 代码不能使用顶层 await**（EdgeOne 运行时基于 Node.js 14）
 - **`externalNodeModules` 必须在 `edgeone.json` 中声明外部依赖**
 
+## 致谢
+
+本项目基于原始项目 [互动客厅](https://www.wkun.com/book/) 重构而来，感谢原项目提供的产品设计与功能参考。
+
 ## 许可证
 
-MIT License · Copyright © 新文艺
+MIT License · Copyright © 视觉符号
