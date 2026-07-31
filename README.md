@@ -63,6 +63,42 @@ talk/
 - MongoDB Atlas 账号（用于数据库）
 - 腾讯云 COS（用于图片存储，可选）
 
+### MongoDB Atlas 设置
+
+本项目使用 MongoDB Atlas（云数据库），免费集群即可满足需求。设置步骤：
+
+1. **注册账号并创建集群**
+   - 访问 https://www.mongodb.com/cloud/atlas/register 注册
+   - 选择「Free」免费方案，选择离用户最近的区域（如 AWS / Singapore）
+   - 等待集群创建完成（约 3-5 分钟）
+
+2. **创建数据库用户**
+   - 左侧菜单 → Database Access → Add New Database User
+   - 填写用户名（如 `talks`）和密码（需妥善保存）
+   - Database User Privileges 选择「Read and write to any database」
+
+3. **配置网络访问白名单**
+   - 左侧菜单 → Network Access → Add IP Address
+   - 开发阶段可选「Allow Access from Anywhere」（`0.0.0.0/0`）
+   - 生产环境建议只添加 EdgeOne 出口 IP 和本地 IP
+
+4. **获取连接字符串**
+   - 左侧菜单 → Database → Connect → Drivers
+   - 复制 Connection String，格式如下：
+     ```
+     mongodb+srv://<用户名>:<密码>@<集群地址>/?retryWrites=true&w=majority&appName=Cluster0
+     ```
+   - **在连接字符串中追加数据库名 `/talks`**（关键！否则会连到默认的 test 库）：
+     ```
+     mongodb+srv://<用户名>:<密码>@<集群地址>/talks?retryWrites=true&w=majority&appName=Cluster0
+     ```
+
+5. **验证连接**
+   - 将完整连接字符串填入 `.env.local` 的 `DATABASE_URL`
+   - 启动项目后访问 `/api/debug`，若返回 `database.connected: true` 即连接成功
+
+> **常见问题**：如果 `/api/debug` 显示连接失败，依次检查：① 密码是否正确 ② 是否已添加 IP 白名单 ③ 连接字符串是否包含 `/talks` ④ 用户权限是否为 read/write。
+
 ### 本地开发
 
 1. **安装依赖**
@@ -113,25 +149,61 @@ EdgeOne Pages 检测到推送后会自动构建。`cloud-functions` 目录下的
 | 变量名 | 说明 |
 |--------|------|
 | `DATABASE_URL` | MongoDB 连接字符串（含 `/talks` 数据库名） |
-| `JWT_SECRET` | JWT 签名密钥 |
+| `JWT_SECRET` | JWT 签名密钥（固定值，详见下方说明） |
 | `COS_SECRET_ID` | 腾讯云 COS 密钥 ID（如需图片上传） |
 | `COS_SECRET_KEY` | 腾讯云 COS 密钥 |
 | `COS_BUCKET` | COS 存储桶名 |
 | `COS_REGION` | COS 区域 |
 
-4. **初始化管理员**
+> **关于 `JWT_SECRET`**：本项目的 JWT 密钥为固定字符串 `xinwenyi-talk-secret-key`，本地开发（`.env.local`）和 EdgeOne 生产环境都使用同一个值。该值用于对登录 token 进行签名，**必须固定**，否则每次变更会导致所有已登录用户被强制退出。
+>
+> **修改步骤**（如需增强安全性）：
+> 1. 生成强随机字符串：`node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+> 2. 修改本地 `.env.local` 中的 `JWT_SECRET` 值
+> 3. 登录 EdgeOne 控制台 → 项目设置 → 环境变量，更新 `JWT_SECRET` 为同一新值
+> 4. 推送代码触发重新部署，或手动在控制台点击「重新部署」
+> 5. 等待部署完成，所有用户需重新登录（旧 token 失效，密码不变）
+
+4. **验证数据库连接**
 
 部署完成后，浏览器访问：
+
+```
+https://你的域名/api/debug
+```
+
+正常返回如下 JSON 即表示数据库已连接成功：
+
+```json
+{
+  "env": {
+    "DATABASE_URL_set": true,
+    "JWT_SECRET_set": true,
+    "NODE_ENV": "not set"
+  },
+  "database": {
+    "connected": true,
+    "adminCount": 0,
+    "messageCount": 0
+  }
+}
+```
+
+> 若 `database.connected` 为 `false` 或返回 500，请依次检查：① MongoDB 用户密码是否正确 ② Network Access 是否已添加 `0.0.0.0/0` ③ 连接字符串是否包含 `/talks` 数据库名。
+
+5. **初始化管理员**
+
+确认数据库连接成功后（`adminCount: 0` 表示尚未初始化），浏览器访问：
 
 ```
 https://你的域名/api/setup
 ```
 
-将使用默认账号初始化管理员：
+返回 `{"success":true,"message":"管理员初始化成功"}` 即完成初始化，默认账号：
 - 用户名：`admin`
 - 密码：`admin123`
 
-> **安全提示**：初始化后请立即登录并修改密码。
+> **安全提示**：初始化后请立即用此账号登录，到首页底部点击「修改密码」改成强密码。
 
 ### 常用命令
 
